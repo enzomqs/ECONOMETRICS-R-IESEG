@@ -17,9 +17,11 @@ library(sandwich) # Load library sandwich
 
 library(quantmod) # Library to Optimize Returns and Key indicators computation
 
-# Import Excel file 
+# Import Excel file and read different Sheets + Define the DataFrame 
 rv_data <- read_excel("Group Work Data - JL.xlsx")
-show(rv_data)
+rv_dataPAGE2 <- read_excel("Group Work Data - JL.xlsx", sheet = 2)
+rv_dataPAGE3 <- read_excel("Group Work Data - JL.xlsx", sheet = 3)
+rv_dataPAGE4 <- read_excel("Group Work Data - JL.xlsx", sheet = 4)
 
 ###############################################
 # Case 1: The Single Index Model (Weight: 40%)
@@ -111,4 +113,6 @@ print(ESS)
 #a.	Write a short summary of what you did
 #b.	What do we learn from these results?
 #c.	What do you think about the results?
+
+
   
