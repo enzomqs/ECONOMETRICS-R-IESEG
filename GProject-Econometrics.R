@@ -74,22 +74,23 @@ print(ESS)
 ###############################################
 # Case 2: GDP Forecasting (Weight: 60%)
 ###############################################
-
-#--------#
 #1.	Start by removing the last 4 observations from the dataset in order to have GDP data until and including 2019Q4. Then, draw a time series graph of GDP. Interpret the series from a visual perspective. Explain whether you think it is stationary or not.
-
+ 
+rv_dataPAGE3[-c(101, 102, 103, 104),,drop=F]
 #--------#
 #2.	Conduct an Augmented Dickey-Fuller test and interpret the results.
-
+library(tseries)
+adf.test(rv_dataPAGE3$GPD)
 #--------#
 #3.	If the series is not stationary add the necessary boxes with your answers
-  #a
-  #b
-  #c
-  #d
+#a
+#b
+#c
+#d
 #--------#
 #4.	Show a graph of the ACF (autocorrelation function) and PACF (partial autocorrelation function). 
-
+acf(rv_dataPAGE3$GPD)
+pacf(rv_dataPAGE3$GPD)
 #--------#
 #5.	Compute several ARMA models, each time by changing the parameter p and the parameter q, and record the AIC (Akaike information criterion).
   #a
