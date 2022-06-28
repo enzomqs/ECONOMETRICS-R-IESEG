@@ -75,31 +75,83 @@ print(ESS)
 # Case 2: GDP Forecasting (Weight: 60%)
 ###############################################
 
-#--------#
-#1.	Start by removing the last 4 observations from the dataset in order to have GDP data until and including 2019Q4. Then, draw a time series graph of GDP. Interpret the series from a visual perspective. Explain whether you think it is stationary or not.
+#install packages with If function
 
-#--------#
+if (!require("ggplot2")) {
+  install.packages("ggplot2")
+  library(ggplot2)
+}
+if (!require("dplyr")) {
+  install.packages("dplyr")
+  library(dplyr)
+}
+if (!require("hrbrthemes")) {
+  install.packages("hrbrthemes")
+  library(hrbrthemes)
+}
+if (!require("tseries")) {
+    install.packages("tseries")
+    library(tseries)
+}
+
+
+#1.	Start by removing the last 4 observations from the dataset in order to have GDP data until and including 2019Q4. 
+data2 <- rv_dataPAGE3
+
+dataGDP <- data2[-c(104,103,102,101),]
+
+  #Then, draw a time series graph of GDP.
+
+graphGDP <- ggplot(dataGDP, 
+                   aes(x=Date, 
+                       y=GPD)) +
+  geom_line( color="steelblue") + 
+  geom_point() +
+  xlab("Date")+
+  ylab("GDP")+
+  theme(axis.text.x=element_text(angle=60, hjust=1)) 
+
+graphGDP
+
+  #Interpret the series from a visual perspective. 
+  #Explain whether you think it is stationary or not.
+
 #2.	Conduct an Augmented Dickey-Fuller test and interpret the results.
+GDPadftest <- unlist(dataGDP)
+adf.test(GDPadftest) 
+  #P-value > 0,05, we can say we fail to reject the null hypothesis and the time series is non-stationary
 
-#--------#
+
 #3.	If the series is not stationary add the necessary boxes with your answers
-  #a
-  #b
-  #c
-  #d
-#--------#
+#a. 	Compute a transformation of the series.
+#b. 	Graph the transformed series, and comment on the visual aspect of the plot.
+#c. 	Perform an Augmented Dickey-Fuller test and interpret the results.
+#d. 	If your conclusion is that the series is stationary, then continue to Step 4. Otherwise, start over at Step 3.------#
+
+
+
+
+
 #4.	Show a graph of the ACF (autocorrelation function) and PACF (partial autocorrelation function). 
+dataacf <- dataGDP [,-1]
 
-#--------#
+acf(dataacf, plot = TRUE) #ACF function
+
+pacf(dataacf, plot = TRUE) #PACF function 
+
+
+
+
 #5.	Compute several ARMA models, each time by changing the parameter p and the parameter q, and record the AIC (Akaike information criterion).
-  #a
-  #b
-  #c
+#a
+#b
+#c
 
-#--------#
+
+
 #6.	Perform the ARMA regression that you determined in Step 5c. Show the table of results in your report (no need to comment on these results for now).
 
-#--------#
+
 #7.	Using the residuals from the regression in Step 6:
 
 #--------#
@@ -113,6 +165,3 @@ print(ESS)
 #a.	Write a short summary of what you did
 #b.	What do we learn from these results?
 #c.	What do you think about the results?
-
-
-  
