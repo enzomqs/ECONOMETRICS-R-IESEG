@@ -14,7 +14,7 @@ library(readxl)
 library(lmtest) # Load library lmtest
 # install.packages("sandwich")
 library(sandwich) # Load library sandwich
-
+library(forecast)
 library(quantmod) # Library to Optimize Returns and Key indicators computation
 
 # Import Excel file and read different Sheets + Define the DataFrame 
