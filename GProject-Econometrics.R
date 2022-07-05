@@ -28,11 +28,11 @@ rv_dataPAGE4 <- read_excel("Group Work Data - JL.xlsx", sheet = 4)
 ###############################################
 #1.	Work out the OLS estimates of the parameters α and β using data for the full period from January 2nd, 2018 until November 25th, 2020. 
 #Define the variables
-ExRSP <- rv_data$EXRSP500
-ExP1 <- rv_data$EXRET_P1
+EXRSP500 <- rv_data$EXRSP500
+EXRET_P1 <- rv_data$EXRET_P1
 
 #Single Index Model
-model1 <- lm(rv_data$EXRSP500 ~ ExP1)
+model1 <- lm(EXRSP500 ~ EXRET_P1)
 summary(model1)
 
 # Plot residuals
@@ -44,17 +44,16 @@ plot.ts(model1$residuals) # Plot residuals
 confint(model1, level=0.95)
 
 # Test A
-linearHypothesis(model1, c('ExP1=0'))
+linearHypothesis(model1, c('EXRET_P1=0'))
 ### Since p-value>0.05 the test fails to reject the null H0: alpha = 0
 
-### XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 # Test B
-linearHypothesis(model1, c('ExRSP=1'))
+linearHypothesis(model1, c("(Intercept)=1"))
+### Since p-value>0.05 the test fails to reject the null H0: beta = 1
 
 # Test C
-linearHypothesis(model1, c("(ExP1)=0", "ExRSP"))
-### XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
-
+linearHypothesis(model1, c("EXRET_P1=0", "(Intercept)=1"))
+### Since p-value>0.05 the test fails to reject the null H0: alpha = 0 and Beta = 1
 
 #--------#
 #3.For the regression above, compute the decomposition TSS = RSS + ESS. Comment on your results and draw a parallel with the following risk decomposition Total Risk = Systematic Risk + Idiosyncratic Risk.
@@ -75,10 +74,29 @@ print(ESS)
 #--------#
 #4.Produce OLS estimates for such linear regression over the full period 2 January 2018 until 25 Nov 2020.
 DTB3 <- rv_data$DTB3
-model2 <- lm(ExRSP ~ ExP1 + DTB3)
+model2 <- lm(EXRSP500 ~ EXRET_P1 + DTB3)
 summary(model2)
 #--------#
 #5.	Solve the following hypothesis tests, and report your results in the tables: 
+# Test A
+linearHypothesis(model2, c('EXRET_P1=0'))
+### Since p-value>0.05 the test fails to reject the null H0:
+
+# Test B
+linearHypothesis(model2, c('(Intercept)=1'))
+### Since p-value>0.05 the test fails to reject the null H0:
+
+# Test c
+linearHypothesis(model2, c('DTB3=0'))
+### Since p-value>0.05 the test fails to reject the null H0:
+
+# Test E
+linearHypothesis(model2, c("EXRET_P1=0", "(Intercept)=0", "DTB3=0"))
+### Since p-value>0.05 the test fails to reject the null H0:
+
+# Test F
+linearHypothesis(model2, c("EXRET_P1=0", "DTB3=0"))
+### Since p-value>0.05 the test fails to reject the null H0:
 
 #--------#
 #6.	Comment on the meaning and the implications of these tests conducted in question 5. Explain what happened to this stock during the Covid pandemic (about 200 words).
