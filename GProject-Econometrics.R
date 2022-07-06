@@ -168,22 +168,74 @@ plot(sim3, main="ARMA(0,2)", col="blue")
 plot(sim4, main="ARMA(0,3)", col="blue")
 
 #--------#
+#--------#
+
+x <- rv_dataPAGE3$GPD
+
 #6.	Perform the ARMA regression that you determined in Step 5c. Show the table of results in your report (no need to comment on these results for now).
+
+arma <- arima(x, order = c(0,0,0))
+arma
+
+#or
+#AutoArimaModel=auto.arima(rv_dataPAGE3$GPD)
+#AutoArimaModel
+
 
 #--------#
 #7.	Using the residuals from the regression in Step 6:
+#Show the ACF of residuals
+
+resid <- residuals(arma)
+acf(resid, main="Resid ARMA(0,0)")
+
+# test whether the first few autocorrelations are statistically significant, individually.
+
+# Perform a Ljung-Box tests on the residuals. 
+#First, select a relevant number of lags to use.
+lag1 = 5 #weekly 
+lag2 = 21 #monthly
+
+#Ljung-Box tests 
+Box.test(resid, lag = lag1, type = c("Ljung-Box"))   
+Box.test(resid, lag = lag2, type = c("Ljung-Box"))  
 
 #--------#
 #8.	Perform an out-of-sample forecast of the quarters 2020Q1 until 2020Q4. 
+fitted <- fitted(arma)
+plot.ts(x)
+lines(fitted, col = "blue")
+
+myforecast <- predict(x, 10)
+str(myforecast)
+
+pred <- myforecast[["pred"]] ###probleme = SE et PRED = NULL 
+se <- myforecast[["se"]] ###probleme = SE et PRED = NULL 
+
+# and the forecast standard error
+
+xlim = c(0,130)
+ylim = c(2400, 4000)
+
+plot.ts(x, xlim=xlim, ylim= ylim)
+lines(pred, xlim = xlim,, ylim = ylim , col="blue")
+CIhi <- pred+2*se
+CIlo <- pred-2*se
+lines(CIhi, col="blue", lty=2)
+lines(CIlo, col="blue", lty=2)
 
 #--------#
 #9.	Compute the GDP forecast, and plot in a graph the original GDP series together with its forecast (can be done either in Excel or in R). Comment on this graph. Tell whether the actual European GDP has already bounced back and reached the lost GDP due to the pandemic, according to the forecasted GDP had the pandemic not occurred.
+
+autoplot(forecast(myforecast))
 
 #--------#
 #10.	Write a conclusion to this case (about 300 words) among which:
 #a.	Write a short summary of what you did
 #b.	What do we learn from these results?
 #c.	What do you think about the results?
+
+
 
 
   
